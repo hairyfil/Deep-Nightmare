@@ -1,0 +1,12 @@
+.boto
+.vagrant/*
+images-in/*
+images-out/*
+images-seed-all/*
+models/*
+samples/*
+thumbnails/*
+tmp/*
+*.log
+err
+runme.sh
