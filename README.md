@@ -1,23 +1,23 @@
 # DeepNightmare
 
-This "DeepNightmarae" application utilises deep dreaming image manipulation techniques to produce warped and freaky images based on an input image of a person's face
+This "Deep Nightmare" application utilises deep dreaming image manipulation techniques to produce warped and freaky images based on an input image of a person's face
 After trying several other packages and failing I settled on using bat-country https://github.com/jrosebr1/bat-country/edit/master/batcountry/batcountry.py
 
 ## Installation
-Important - the version that is installed using pip is old and out of date. The base functionality works but when you try to specify a new guide-image a syntax error is thrown. variable nH is used before assigned.
+
+Important - the version of bat-country that is installed using pip is old and out of date. The base functionality works but when you try to specify a new guide-image a syntax error is thrown. "variable nH is used before assigned"
 To fix this I downloaded the latest copy of batcountry.py from the git repository and manually replaced the pip installed version - /usr/local/lib/python2.7/dist-packages/batcountry/batcountry.py
 
 Important - the installation of caffe is missing the model file required by bat-country - bvlc_googlenet.caffemodel 
 you will find this in the folder named models and this file should be copied to /usr/local/caffe/models/bvlc_googlenet to avoid errors
 
-These changes could/should be added to the bootstrap.sh file
+These changes could/should be added to the bootstrap.sh file. Update - I have amended the bootstrap.sh file to copy these files to their proper locations
 
-## Testing
+## Data Flow
 
-the runme.sh script runs through a number of iterations using all the seed files in the images-seed folder and applies it to (all) the input images in the images folder (note: last run of this script only looked at images starting with the letter p)
-
-The script calls demo_guided.py which has been tested to work
-
+The application scans the S3 bucket "temporary-incoming-images" for new images. When found, the image is downloaded and parsed twice - using different layers but the same seed image.
+The image is deleted from the temp bucket, and once parsing has been completed the before image and 2 * after images are uploaded to the "deepnightmare-before" and "Deepnightmare-after" buckets
+The application then generates thumbnail versions of each image and uploads to the thumbnail buckets.
 
 ## Notes
 
