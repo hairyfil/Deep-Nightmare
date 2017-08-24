@@ -3,6 +3,8 @@
 This "Deep Nightmare" application utilises deep dreaming image manipulation techniques to produce warped and freaky images based on an input image of a person's face
 After trying several other packages and failing I settled on using bat-country https://github.com/jrosebr1/bat-country/edit/master/batcountry/batcountry.py
 
+This is part of a multi-app solution with a Raspberry Pi running a photo booth. Captured photos are sent to S3 which will be picked up and manipulated using this application running on my local machine. The final application is a flask web application running on Pivotal Cloud Foundry which will show an album of all images stored.
+
 ## Installation
 
 Important - the version of bat-country that is installed using pip is old and out of date. The base functionality works but when you try to specify a new guide-image a syntax error is thrown. "variable nH is used before assigned"
@@ -19,9 +21,10 @@ The application scans the S3 bucket "temporary-incoming-images" for new images. 
 The image is deleted from the temp bucket, and once parsing has been completed the before image and 2 * after images are uploaded to the "deepnightmare-before" and "Deepnightmare-after" buckets
 The application then generates thumbnail versions of each image and uploads to the thumbnail buckets.
 
+In early versions of the code I used the original file name throughout - appending layer names & seed image names to the after image names. This would lead to problems if different incoming images shared the same name. Also the layer name would often include a '/' which would then lead to folders being created in the S3 buckets. So to solve these problems I run a MD5 hash against the incoming image content and then all subsequent images use the hash value as part of the name.
+
 ## Notes
 
-This is part of a multi-app solution with a Raspberry Pi running a photo booth. Captured photos are sent to S3 which will be picked up and manipulated using this application running on my local machine. The final application is a flask web application running on Pivotal Cloud Foundry which will show an album of all images stored.
 
 
 # bat-country
