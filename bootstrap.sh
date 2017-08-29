@@ -34,6 +34,11 @@ sudo ln /dev/null /dev/raw1394
 #install boto
 sudo pip install boto
 
+#install tweepy
+sudo pip install tweepy
+sudo pip install configparser
+sudo pip install textblob
+
 #install bat-country
 sudo pip install bat-country
 sudo mv /usr/local/lib/python2.7/dist-packages/batcountry/batcountry.py /usr/local/lib/python2.7/dist-packages/batcountry/batcountry.py.old

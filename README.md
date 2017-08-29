@@ -7,6 +7,9 @@ This is part of a multi-app solution with a Raspberry Pi running a photo booth. 
 
 ## Installation
 
+The bootstrap.sh DID work, but when I tried to rebuild again I was getting pip errors "cannot import name IncompleteRead" - I solved this by deleting /usr/local/python2.7/dist-packages/resource*
+BUT THEN, the application bombs out, so I move those folders back and the application now works (but pip is broken)
+
 Important - the version of bat-country that is installed using pip is old and out of date. The base functionality works but when you try to specify a new guide-image a syntax error is thrown. "variable nH is used before assigned"
 To fix this I downloaded the latest copy of batcountry.py from the git repository and manually replaced the pip installed version - /usr/local/lib/python2.7/dist-packages/batcountry/batcountry.py
 

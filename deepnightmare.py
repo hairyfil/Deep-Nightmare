@@ -21,6 +21,10 @@ import time
 import logging
 import hashlib
 
+import tweepy
+from textblob import TextBlob
+from configparser import SafeConfigParser
+
 os.environ["BOTO_CONFIG"] = ".boto"
 import boto
 from boto.s3.key import Key
@@ -38,6 +42,26 @@ def mydebugmsg(msg):
 		print (msg)
 	return
 
+#
+# tweet out that a new images has been made available
+#
+
+def tweet_the_nightmare(image_url):
+	parser = SafeConfigParser()
+	parser.read('.tweepy')
+
+	consumer_key        = parser.get('tweepy', 'consumer_key')
+	consumer_secret     = parser.get('tweepy', 'consumer_secret')
+	access_token        = parser.get('tweepy', 'access_token')
+	access_token_secret = parser.get('tweepy', 'access_token_secret')
+
+	auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+	auth.set_access_token(access_token, access_token_secret)
+
+	api = tweepy.API(auth)
+
+	api.update_status("New Nightmare #deepnightmare " + image_url)
+	return
 #
 # creates a hash value based on the content of the input file
 #
@@ -57,7 +81,6 @@ def create_hash(file):
 			sha1.update(data)
 
 	mydebugmsg("MD5: {0}".format(md5.hexdigest()))
-	mydebugmsg("SHA1: {0}".format(sha1.hexdigest()))
 	
 	return md5.hexdigest()
 
@@ -137,6 +160,10 @@ def dream_that_image(before, after, layer, seed, filehash, iteration):
 	mydebugmsg ("new key name = [" + keyname + "]")
 
 	create_thumbnail(after, keyname, after_thumbnails_bucket)
+
+	photo_after_url	= "https://{}.{}/{}".format(after_bucket_name, s3.server_name(), keyname)
+	tweet_the_nightmare (photo_after_url)
+	mydebugmsg("url for tweepy = " + photo_after_url)
 
 	mydebugmsg ("------------------------------------------")
 	return

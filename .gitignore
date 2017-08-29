@@ -1,12 +1,10 @@
 .boto
-.vagrant/*
-images-in/*
+.tweepy
+initial_image/*
+inages-in/*
 images-out/*
-images-seed-all/*
-models/*
+images-seed - all/*
 samples/*
 thumbnails/*
-tmp/*
 *.log
 err
-runme.sh
